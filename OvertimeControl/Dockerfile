@@ -4,7 +4,7 @@ FROM maven:3.8.6 AS build
 
 WORKDIR /app
 
-# POMファイルとソースをコピー
+# POMファイルとソースをコピ-
 COPY pom.xml .
 COPY src ./src
 
