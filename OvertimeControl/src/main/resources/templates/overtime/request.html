@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>残業申請書 入力画面</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container my-4">
+		<h2 class="text-center mb-4 mt-3">残業申請</h2>
+		
+		<table class="table">
+			<tr>
+				<th>部署名</th>
+				<td th:text="${#authentication.principal.departmentName}"></td>
+			</tr>
+			<tr>
+				<th>申請者名</th>
+				<td th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}"></td>
+			</tr>
+			<tr>
+				<th>申請日</th>
+				<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></td>
+			</tr>
+		</table>
+
+
+		<form method="post" th:action="@{/request}" th:object="${overtimeRequestForm}">
+			<div class="form-group">
+				<label for="workPattern">勤務パターン</label>
+				<select class="form-control" th:field="*{workPattern}" th:errorclass="is-invalid">
+					<option th:each="pattern : ${workPatternList}" th:value="${pattern.name()}"
+						th:text="${pattern.displayName}">
+					</option>
+				</select>
+
+				<div class="invalid-feedback" th:errors="*{workPattern}"></div>
+			</div>
+
+
+
+			<div class="form-group">
+				<label for="requestStartTime">残業予定開始時間</label>
+				<input type="datetime-local" class="form-control" th:field="*{requestStartTime}"
+					th:errorclass="is-invalid" />
+				<div class="invalid-feedback" th:errors="*{requestStartTime}"></div>
+			</div>
+			<div class="form-group">
+				<label for="requestFinishTime">残業予定終了時間</label>
+				<input type="datetime-local" class="form-control" th:field="*{requestFinishTime}"
+					th:errorclass="is-invalid" />
+				<div class="invalid-feedback" th:errors="*{requestFinishTime}"></div>
+			</div>
+			<div class="form-group">
+				<label for="reason">残業理由</label>
+				<textarea class="form-control" th:field="*{reason}" rows="3" th:errorclass="is-invalid"></textarea>
+				<div class="invalid-feedback" th:errors="*{reason}"></div>
+			</div>
+			<div class="text-center mt-4">
+				<input type="submit" class="btn btn-primary mt-3" th:value="#{request}">
+				<a class="btn btn-primary mt-3" th:href="@{/home}">キャンセル</a>
+			</div>
+
+		</form>
+
+</body>
+
+</html>

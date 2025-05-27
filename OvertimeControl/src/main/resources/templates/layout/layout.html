@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/layout/layout.css}">
+
+	<script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+	<title></title>
+</head>
+
+<body>
+	<!--ヘッダー-->
+	<nav layout:replace="~{layout/header::header}"></nav>
+	<!--コンテンツ-->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12 main">
+				<div layout:fragment="content"></div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

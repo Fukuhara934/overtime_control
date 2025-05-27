@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="overtime_control.infrastructure.repository.DepartmentRepository">
+	<resultMap id="Department" type="overtime_control.domain.model.Department">
+		<id property="id" column="id" />
+		<result property="departmentName" column="department_name" />
+	</resultMap>
+
+	<select id="findAll" resultMap="Department">
+		select
+			id,
+			department_name
+		from 
+			department
+	</select>
+	
+	<select id="findById" resultMap="Department">
+		select
+			id,
+			department_name
+		from
+			department
+		where
+			id = #{id}
+	</select>
+
+</mapper>

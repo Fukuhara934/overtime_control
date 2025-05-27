@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-dark bg-success" layout:fragment="header">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/home}">残業管理アプリ</a>
+			<div class="d-flex align-items-center">
+				<div class="text-white text-end me-3">
+					<div th:text="${#authentication.principal.departmentName}" style="font-size: 0.85rem;"></div>
+					<div th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}"
+						style="font-weight: bold;"></div>
+				</div>
+				<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+					data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+
+				<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+					aria-labelledby="offcanvasDarkNavbarLabel">
+					<div class="offcanvas-header">
+						<h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">menu</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+							aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body">
+						<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" th:href="@{/home}">ホーム</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" aria-current="page" th:href="@{/report}">報告一覧</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+									aria-expanded="false">
+									ユーザー情報
+								</a>
+								<ul class="dropdown-menu dropdown-menu-dark">
+									<li><a class="dropdown-item" href="#">設定</a></li>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+									<li class="text-center">
+										<form method="post" th:action="@{/logout}">
+											<button type="submit"
+												class="dropdown-item bg-transparent border-0">ログアウト</button>
+										</form>
+
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</nav>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!--css-->
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/signup/signup.css}">
+	<!--js-->
+	<script th:src="@{/webjars/jquery/jquery.min.js}" defer></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" defer></script>
+
+	<meta charset="UTF-8">
+	<title>社員情報登録</title>
+</head>
+
+<body>
+	<nav class="navbar  bg-success">
+		<div class="container-fluid">
+			<h1 class="navbar-brand" style="color:azure">残業管理アプリ</h1>
+		</div>
+	</nav>
+	<form id="signup-form" method="post" th:action="@{/signup}" th:object="${signupForm}" class="form-signup">
+		<h1 class="text-center">新規登録</h1>
+
+		<!-- メールアドレス -->
+		<div class="form-group">
+			<label for="email">メールアドレス</label>
+			<input type="text" class="form-control" th:field="*{email}" th:errorclass="is-invalid" autocomplete="email">
+			<div class="invalid-feedback" th:errors="*{email}"></div>
+		</div>
+
+		<!-- パスワード -->
+		<div class="form-group">
+			<label for="password">パスワード</label>
+			<input type="password" class="form-control" th:field="*{password}" th:errorclass="is-invalid">
+			<div class="invalid-feedback" th:errors="*{password}"></div>
+		</div>
+
+		<div class="form-row row">
+			<!-- 姓（名字） -->
+			<div class="form-group col-md-6">
+				<label for="familyName">名字</label>
+				<input type="text" class="form-control" th:field="*{familyName}" th:errorclass="is-invalid">
+				<div class="invalid-feedback" th:errors="*{familyName}"></div>
+			</div>
+
+			<!-- 名（名前） -->
+			<div class="form-group col-md-6">
+				<label for="firstName">名前</label>
+				<input type="text" class="form-control" th:field="*{firstName}" th:errorclass="is-invalid">
+				<div class="invalid-feedback" th:errors="*{firstName}"></div>
+			</div>
+		</div>
+
+
+		<!-- 役職 -->
+		<div class="form-group">
+			<label for="role">役職</label>
+			<select class="form-control" th:field="*{role}" th:errorclass="is-invalid">
+				<option value="" th:text="'選択してください'"></option>
+				<option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.roleName}"></option>
+			</select>
+			<div class="invalid-feedback" th:errors="*{role}"></div>
+		</div>
+
+		<!-- 部署 -->
+		<div class="form-group">
+			<label for="departmentId">部署</label>
+			<select class="form-control" th:field="*{departmentId}" th:errorclass="is-invalid">
+				<option value="" th:text="'選択してください'"></option>
+				<option th:each="department : ${departments}" th:value="${department.id}"
+					th:text="${department.departmentName}"></option>
+			</select>
+			<div class="invalid-feedback" th:errors="*{departmentId}"></div>
+		</div>
+
+		<!-- 登録ボタン -->
+		<input type="submit" value="登録" class="btn btn-primary w-100 mt-3">
+	</form>
+
+</body>
+
+</html>

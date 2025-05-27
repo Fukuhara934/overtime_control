@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>承認確認画面</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container py-4 mt-2">
+			<form method="post" th:action="@{/success/{id}(id=${overtime.id})}" class="form-content">
+
+				<table class="table">
+					<tr>
+						<th>申請者</th>
+						<td th:text="${overtime.user.familyName} + ' ' + ${overtime.user.firstName}">申請者名</td>
+					</tr>
+					<tr>
+						<th>残業予定時間</th>
+						<td
+							th:text="|${#temporals.format(overtime.request.startTime, 'MM/dd HH:mm')} ～ ${#temporals.format(overtime.request.finishTime, 'HH:mm')}|">
+							00/00 00:00 ～ 00:00
+						</td>
+					</tr>
+					<tr>
+						<th>残業理由</th>
+						<td th:text="${overtime.request.reason}">理由</td>
+					</tr>
+					<tr>
+						<th>承認者</th>
+						<td
+							th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}">
+							承認者名</td>
+					</tr>
+					<tr>
+						<th>承認日</th>
+						<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}">yyyy/MM/dd</td>
+					</tr>
+					<tr>
+						<th>認可</th>
+						<td>
+							<input type="hidden" id="status" name="status" class="form-contorl" th:value="2" />
+							承認
+						</td>
+					</tr>
+				</table>
+
+				<div class="text-center mt-4">
+					<input type="submit" value="承認" class="btn btn-success mt-3">
+					<a class="btn btn-primary mt-3 ms-1" th:href="@{/home/approval}">キャンセル</a>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

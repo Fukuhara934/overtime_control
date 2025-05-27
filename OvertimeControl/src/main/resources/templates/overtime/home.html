@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>ホーム画面</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container py-4 mt-2">
+			<div class="d-flex justify-content-between align-items-center">
+				<h1 class="text-center flex-grow-1 m-0">残業管理</h1>
+				<a th:href="@{home/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
+			</div>
+
+			<div class="row mb-4">
+
+				<!-- 左側 -->
+				<div class="col-md-4 mt-4">
+					<div class="row">
+
+						<!-- 申請ボタン -->
+						<div class="col-12 mb-4">
+							<div class="card">
+								<div class="card-header">新規申請</div>
+								<div class="text-center mt-2">
+									<a th:href="@{/request}" class="btn btn-primary">申請書作成へ</a>
+								</div>
+								<div class="card-body">
+									<p class="card-text">残業申請が必要な方はこちらからお願いします。</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 mb-4">
+							<div class="card">
+								<div class="card-header">印刷</div>
+								<div class="text-center mt-2">
+									<a class="btn btn-success" th:href="@{/print}">申請書の印刷</a>
+								</div>
+								<div class="card-body">
+									<p class="=card-text">筆記での記入がよい方はこちらから上長と相談の上ご利用ください。</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 右側 -->
+				<div class="col-md-8 mt-4">
+					<div class="card">
+						<div class="card-header">申請状況の確認</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered m-0 text-center">
+									<thead class="table-light">
+										<tr>
+											<th>残業日時</th>
+											<th>理由</th>
+											<th>状態</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="requests : ${overtimeRequests}" th:if="${requests.status.id <= 3}">
+											<td
+												th:text="${#temporals.format(requests.request.startTime,
+												'MM/dd HH:mm')} + ' ～ ' + ${#temporals.format(requests.request.finishTime, 'HH:mm')}">
+												04/01 18:00 ～ 20:00
+											</td>
+											<td th:text="${requests.request.reason.length() > 15 ?
+														#strings.substring(requests.request.reason, 0, 15) + '…' :
+														requests.request.reason}">
+												資料…
+											</td>
+											<td th:text="${requests.status.status}">申請中</td>
+											<td>
+												<a th:if="${requests.status.status == '申請中'}"
+													class="btn btn-primary btn-sm mb-1"
+													th:href="@{/request/update/{id}(id=${requests.id})}">
+													編集へ
+												</a>
+												<a th:if="${requests.status.status == '承認'}"
+													class="btn btn-success btn-sm mb-1"
+													th:href="@{/report/{id}(id=${requests.id})}">
+													報告へ
+												</a>
+												<a th:if="${requests.status.status == '却下'}"
+													class="btn btn-danger btn-sm mb-1"
+													th:href="@{/request/update/{id}(id=${requests.id})}">
+													再申請
+												</a>
+												<a th:if="${requests.status.status == '承認'}"
+												   class="btn btn-success btn-sm mb-1"
+												   th:href="@{/print/{id}(id=${requests.id})}">印刷</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div> <!-- row -->
+		</div> <!-- container -->
+	</div>
+</body>
+
+</html>

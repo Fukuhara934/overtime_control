@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>残業報告 入力画面</title>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container my-4">
+		<h2 class="text-center mb-4 mt-3">残業報告</h2>
+
+		<table class="table">
+			<tr>
+				<th>部署名</th>
+				<td th:text="${#authentication.principal.departmentName}"></td>
+			</tr>
+			<tr>
+				<th>申請者名</th>
+				<td th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}"></td>
+			</tr>
+			<tr>
+				<th>報告日</th>
+				<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></td>
+			</tr>
+		</table>
+
+
+		<form method="post" th:action="@{'/report/' + ${overtime.id}}" th:object="${overtimeReportForm}">
+
+			<div class="form-group">
+				<label for="reportStartTime">実残業開始時間</label>
+				<input type="datetime-local" class="form-control" th:field="*{reportStartTime}"
+					th:errorclass="is-invalid" />
+				<div class="invalid-feedback" th:errors="*{reportStartTime}"></div>
+			</div>
+			<div class="form-group">
+				<label for="reportFinishTime">実残業終了時間</label>
+				<input type="datetime-local" class="form-control" th:field="*{reportFinishTime}"
+					th:errorclass="is-invalid" />
+				<div class="invalid-feedback" th:errors="*{reportFinishTime}"></div>
+			</div>
+			<div class="form-group">
+				<label for="breaktime">休憩時間</label>
+				<div class="input-group">
+					<input type="number" class="form-control" th:field="*{breaktime}" min="0" th:errorclass="is-invalid" />
+						<span class="input-group-text">分</span>
+				<div class="invalid-feedback" th:errors="*{breaktime}"></div>
+				</div>
+				
+
+			</div>
+			
+			<div class="form-group">
+				<label for="report">残業内容報告</label>
+				<textarea class="form-control" th:field="*{report}" rows="3" th:errorclass="is-invalid"></textarea>
+				<div class="invalid-feedback" th:errors="*{report}"></div>
+			</div>
+			<div class="text-center mt-4">
+				<input type="submit" class="btn btn-primary" th:value="#{report}">
+			</div>
+
+		</form>
+
+</body>
+
+</html>

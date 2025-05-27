@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>残業申請の確認画面</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container py-4 mt-2">
+			<div class="d-flex justify-content-between align-items-center">
+				<h1 class="text-center flex-grow-1 m-0">残業管理</h1>
+				<a th:href="@{/home}" class="btn btn-outline-primary">残業申請ページへ</a>
+			</div>
+			<div class="row mb-4">
+				<div class="col-md-12 mt-4">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="mb-0">承認待ちの残業申請</h5>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead class="thead-light">
+										<tr>
+											<th style="width: 110px;">申請者</th>
+											<th>日時</th>
+											<th style="width: 600px">理由</th>
+											<th>状態</th>
+											<th>機能</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="overtime : ${overtimeApproval}">
+											<td
+												th:text="${overtime.user.familyName} + ' ' + ${overtime.user.firstName}">
+												申請者名</td>
+											<td th:text="|${#temporals.format(overtime.request.startTime, 'MM/dd HH:mm')}
+													～ ${#temporals.format(overtime.request.finishTime, 'HH:mm')}|">
+												日時</td>
+											<td th:text="${overtime.request.reason}">理由</td>
+											<td th:text="${overtime.status.status}">状態</td>
+											<td>
+												<a th:href="@{/success/{id}(id=${overtime.id})}" class="btn btn-success btn-sm">承認</a>
+												<a th:href="@{/reject/{id}(id=${overtime.id})}" class="btn btn-danger btn-sm">却下</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

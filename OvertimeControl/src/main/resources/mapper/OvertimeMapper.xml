@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="overtime_control.infrastructure.repository.OvertimeRepository">
+
+	<resultMap id="MOvertime"
+		type="overtime_control.domain.model.MOvertime">
+
+		<id property="id" column="id"/>
+		<!-- WorkPattern TypeHandlerによる変換が必要だからここで書いておく -->
+		<result property="pattern" column="pattern"
+			typeHandler="overtime_control.infrastructure.typeHandler.WorkPatternTypeHandler"/>
+
+		<!-- 残業申請情報 -->
+		<result property="requestStartTime" column="request_start_time"/>
+		<result property="requestFinishTime" column="request_finish_time"/>
+		<result property="reason" column="reason"/>
+		<result property="rejectReason" column="reject_reason"/>
+		<result property="approvalTime" column="approval_time"/>
+
+		<!-- 報告情報 -->
+		<result property="reportStartTime" column="report_start_time"/>
+		<result property="reportFinishTime" column="report_finish_time"/>
+		<result property="breaktime" column="breaktime"/>
+		<result property="report" column="report"/>
+		<result property="submitTime" column="submit_time"/>
+
+		<!-- ステータス -->
+		<result property="status" column="status"
+		typeHandler="overtime_control.infrastructure.typeHandler.OvertimeStatusTypeHandler"/>
+		
+		
+		<!-- 申請者 -->
+		<association property="user"
+			javaType="overtime_control.domain.model.MUser">
+			<id property="id" column="user_id"/>
+			<result property="familyName" column="user_family_name"/>
+			<result property="firstName" column="user_first_name"/>
+			<result property="role" column="user_role" 
+					typeHandler="overtime_control.infrastructure.typeHandler.UserRoleTypeHandler"/>
+		</association>
+		
+		<!-- 承認者 -->
+		<association property="approver"
+			javaType="overtime_control.domain.model.MUser">
+			<id property="id" column="approver_id"/>
+		    <result property="familyName" column="approver_family_name"/>
+		    <result property="firstName" column="approver_first_name"/>
+			<result property="role" column="approver_role" 
+			typeHandler="overtime_control.infrastructure.typeHandler.UserRoleTypeHandler"/>
+		</association>
+		<association property="department"
+			javaType="overtime_control.domain.model.Department">
+			<id property="id" column="department_id"/>
+			<result property="departmentName" column="department_name"/>
+		</association>
+	</resultMap>
+
+	<!-- Status１,２,３取得 -->
+	<select id="selectByUserIdRequest" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.reject_reason,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name as approver_family_name,
+			a.first_name as approver_first_name,
+			a.role as approver_role
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		left join m_user a on mo.approver_id = a.id
+		where 
+			mo.user_id = #{userId}
+		and
+			mo.status in (1, 2, 3)
+		order by mo.request_start_time desc
+		
+	</select>
+	
+	<!-- status 1取得 -->
+	<select id="findAllApproval" resultMap="MOvertime">
+	SELECT
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			d.id AS department_id,
+			d.department_name,
+			u.id AS user_id,
+			u.family_name AS user_family_name,
+			u.first_name AS user_first_name,
+			u.role AS user_role
+		FROM
+			m_overtime mo
+		LEFT JOIN department d ON mo.department_id = d.id
+		LEFT JOIN m_user u ON mo.user_id = u.id
+		where
+			status = 1
+	
+	</select>
+	
+	<!-- 一件取得 -->
+	<select id="selectById" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.reject_reason,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id AS department_id,
+			d.department_name,
+			u.id AS user_id,
+			u.family_name AS user_family_name,
+			u.first_name AS user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name AS approver_family_name,
+			a.first_name AS approver_first_name,
+			a.role AS approver_role
+		from
+			m_overtime mo
+		left join
+			department d on mo.department_id = d.id
+		left join
+			m_user u on mo.user_id = u.id
+		left join
+			m_user a on mo.approver_id = a.id
+		where 
+			mo.id = #{id}
+	</select>
+	
+	<!-- 申請 -->
+	<insert id="insertRequest">
+		insert into m_overtime (
+			department_id,
+			user_id,
+			pattern,
+			request_start_time,
+			request_finish_time,
+			reason,
+			status
+		)
+		values (
+			#{department.id},
+			#{user.id},
+			#{pattern.id},
+			#{requestStartTime},
+			#{requestFinishTime},
+			#{reason},
+			1
+		)
+	</insert>
+	
+	<!-- 申請の修正 -->
+	<update id="updateRequest">
+		update 
+			m_overtime
+		set
+			pattern = #{pattern.id},
+			request_start_time = #{requestStartTime},
+			request_finish_time = #{requestFinishTime},
+			reason = #{reason},
+			status = #{status}
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- 申請の承認 -->
+	<update id="updateApproval">
+		update 
+			m_overtime
+		set
+			approver_id = #{approver.id},
+			reject_reason = #{rejectReason},
+			approval_time = current_date,
+			status = #{status}
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- 報告 -->
+	<update id="updateReport">
+		update 
+			m_overtime
+		set
+			report_start_time = #{reportStartTime},
+			report_finish_time = #{reportFinishTime},
+			breaktime = #{breaktime},
+			report = #{report},
+			submit_time = current_date,
+			status = 4
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- ユーザーidからStatus ４ を取得 -->
+	<select id="selectByUserIdReported" resultMap="MOvertime" parameterType="int">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name as approver_family_name,
+			a.first_name as approver_first_name,
+			a.role as approver_role
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		left join m_user a on mo.approver_id = a.id
+		where 
+			mo.user_id = #{userId}
+		and
+			mo.status = 4
+		order by mo.request_start_time desc
+	</select>
+
+	<!-- 残業申請idからの一件取得 -->
+	<select id="findById" resultMap="MOvertime">
+		SELECT
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.reject_reason,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id AS department_id,
+			d.department_name,
+			u.id AS user_id,
+			u.family_name AS user_family_name,
+			u.first_name AS user_first_name,
+			u.role AS user_role,
+			a.id AS
+			approver_id,
+			a.family_name AS approver_family_name,
+			a.first_name AS
+			approver_first_name,
+			a.role AS approver_role
+		FROM
+		m_overtime mo
+		LEFT JOIN department d ON mo.department_id = d.id
+		LEFT JOIN m_user u ON mo.user_id = u.id
+		LEFT JOIN m_user a ON mo.approver_id = a.id
+		WHERE mo.id = #{id}
+	</select>
+	
+	<!-- 残業申請idと申請者idでそのユーザーの申請かどうかチェック -->
+	<select id="isRequestOwner" resultType="boolean">
+	    SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+	    FROM
+	    	m_overtime
+	    WHERE 
+	    	id = #{id}
+	    and 
+	    	user_id = #{userId}
+	    and 
+	    	status = 2 
+	</select>
+	
+	<!-- 存在チェック -->
+	<select id="isExistsId" resultType="boolean">
+	    SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+	    FROM
+	    	m_overtime
+	    WHERE 
+	    	id = #{id}
+	    and 
+	    	status = 1
+	</select>
+	
+	
+
+</mapper>
