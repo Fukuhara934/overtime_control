@@ -1,4 +1,4 @@
-/* CREATE TABLE IF NOT EXISTS department
+CREATE TABLE IF NOT EXISTS department
 (
    id INT AUTO_INCREMENT PRIMARY KEY,
    department_name VARCHAR (50) NOT NULL
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS m_overtime
    reason TEXT,
    approver_id INT,
    approval_time DATETIME,
-   approval_status INT,
+   reject_reason TEXT,
    report_start_time DATETIME,
    report_finish_time DATETIME,
    breaktime INT,
@@ -39,4 +39,4 @@ CREATE TABLE IF NOT EXISTS m_overtime
    FOREIGN KEY (department_id) REFERENCES department (id),
    FOREIGN KEY (user_id) REFERENCES m_user (id),
    FOREIGN KEY (approver_id) REFERENCES m_user (id)
-); */
+); 

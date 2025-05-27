@@ -56,17 +56,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Spring Boot Starter Web (REST API) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.30</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.5</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+
+
 		<!-- Spring Boot Starter Security (認証用) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
