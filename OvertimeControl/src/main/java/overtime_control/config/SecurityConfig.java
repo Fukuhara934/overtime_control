@@ -51,7 +51,12 @@ public class SecurityConfig {
 
 				 
 				.anyRequest().authenticated()
-		);
+		)
+		
+		.requiresChannel(channel -> channel
+                .anyRequest().requiresSecure()
+        );
+		
 		return http.build();
 	}
 }

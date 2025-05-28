@@ -19,9 +19,8 @@
 
 		<form method="post" th:action="@{/request/update/{id}(id=${overtimeId})}"
 			th:object="${overtimeRequestForm}">
-			
-		
-
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+	
 			<table class="table">
 				<tr>
 					<th>申請日</th>

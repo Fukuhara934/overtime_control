@@ -29,7 +29,7 @@
 
 
 		<form method="post" th:action="@{'/report/' + ${overtime.id}}" th:object="${overtimeReportForm}">
-
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="form-group">
 				<label for="reportStartTime">実残業開始時間</label>
 				<input type="datetime-local" class="form-control" th:field="*{reportStartTime}"

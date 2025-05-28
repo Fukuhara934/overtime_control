@@ -21,6 +21,7 @@
 		</div>
 	</nav>
 	<form id="signup-form" method="post" th:action="@{/signup}" th:object="${signupForm}" class="form-signup">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		<h1 class="text-center">新規登録</h1>
 
 		<!-- メールアドレス -->

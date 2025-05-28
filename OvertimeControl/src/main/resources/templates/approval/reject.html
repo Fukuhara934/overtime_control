@@ -10,7 +10,7 @@
 	<div layout:fragment="content">
 		<div class="container py-4 mt-2">
 			<form method="post" th:action="@{/reject/{id}(id=${overtime.id})}" class="form-content" th:object="${overtimeApprovalForm}">
-
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 				<table class="table">
 					<tr>
 						<th>申請者</th>

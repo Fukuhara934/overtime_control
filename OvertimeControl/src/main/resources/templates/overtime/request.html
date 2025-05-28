@@ -27,6 +27,7 @@
 
 
 		<form method="post" th:action="@{/request}" th:object="${overtimeRequestForm}">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="form-group">
 				<label for="workPattern">勤務パターン</label>
 				<select class="form-control" th:field="*{workPattern}" th:errorclass="is-invalid">
