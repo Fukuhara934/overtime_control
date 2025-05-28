@@ -29,7 +29,7 @@ public class OvertimePrintController {
 	
 	@GetMapping("/{id}")
 	public String getPrint(@PathVariable Integer id, Model model) {
-		OvertimeDTO overtime = overtimeService.getById(id);
+		OvertimeDTO overtime = overtimeService.getOvertimeById(id);
 		model.addAttribute("overtime",overtime);
 		return "overtime/overtime-print";
 	}

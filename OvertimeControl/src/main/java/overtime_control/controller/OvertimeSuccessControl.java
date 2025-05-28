@@ -36,7 +36,7 @@ public class OvertimeSuccessControl {
 	@GetMapping("/success/{id}")
 	public String getSuccess(@AuthenticationPrincipal UserInform principal,
 							 @PathVariable Integer id, Model model) {
-		OvertimeApprovalDTO overtime = overtimeService.getOvertimeApproval(id);
+		OvertimeApprovalDTO overtime = overtimeService.getApprovalById(id);
 
 		model.addAttribute("overtime", overtime);
 		model.addAttribute("today", LocalDate.now());
@@ -61,7 +61,7 @@ public class OvertimeSuccessControl {
 		overtime.setApprover(user);
 		overtime.setStatus(OvertimeStatus.APPROVED);
 		
-		overtimeService.approvalOvertime(overtime);
+		overtimeService.approvalUpdate(overtime);
 
 		return "redirect:/home/approval";
 

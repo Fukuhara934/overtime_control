@@ -9,14 +9,14 @@ import overtime_control.dto.OvertimeRequestDTO;
 
 public interface OvertimeService {
 	
-	//申請書の書き込み
+	//申請
 	public void requestOvertime(MOvertime overtime);
-	
-	public void approvalOvertime(MOvertime overtime);
-	
+	//承認
+	public void approvalUpdate(MOvertime overtime);
+	//修正
 	public void requestUpdate(MOvertime overtime);
-	
-	public void reportOvertime(MOvertime overtime);
+	//報告
+	public void reportUpdate(MOvertime overtime);
 	
 	//社員用
 	
@@ -24,15 +24,14 @@ public interface OvertimeService {
 	
 	public List<OvertimeRequestDTO> getAllRequestByUserId(Integer id);
 	
-	public OvertimeRequestDTO requestById(Integer id);
+	public OvertimeRequestDTO getRequestById(Integer id);
 	
-	public OvertimeDTO getById(Integer id);
-	public MOvertime getTest(Integer id);
+	public OvertimeDTO getOvertimeById(Integer id);
 	
 	//承認者用
-	public List<OvertimeApprovalDTO> getAllOvertimeApproval();
+	public List<OvertimeApprovalDTO> getAllApproval();
 	
-	public OvertimeApprovalDTO getOvertimeApproval(Integer id);
+	public OvertimeApprovalDTO getApprovalById(Integer id);
 	
 	public boolean isRequestOwner(Integer id, Integer userId);
 	

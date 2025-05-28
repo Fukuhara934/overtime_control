@@ -17,9 +17,9 @@ public interface OvertimeRepository {
     public List<MOvertime> findAllApproval();
     
     //役職なし
-    public List<MOvertime> selectByUserIdRequest(Integer userId);
+    public List<MOvertime> selectRequestByUserId(Integer userId);
     
-    public List<MOvertime> selectByUserIdReported(Integer userId);
+    public List<MOvertime> selectReportedByUserId(Integer userId);
     
     public MOvertime selectById(Integer id);
     

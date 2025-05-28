@@ -40,7 +40,7 @@ public class OvertimeHomeController {
 	@GetMapping("/approval")
 	public String getApproval(@AuthenticationPrincipal UserInform principal, Model model) {
 		//申請一覧取得
-		List<OvertimeApprovalDTO> overtimes = overtimeService.getAllOvertimeApproval();
+		List<OvertimeApprovalDTO> overtimes = overtimeService.getAllApproval();
 		model.addAttribute("overtimeApproval", overtimes);
 
 		return "approval/home";

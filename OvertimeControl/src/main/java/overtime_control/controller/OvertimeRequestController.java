@@ -94,7 +94,7 @@ public class OvertimeRequestController {
 	                                    @PathVariable Integer id,
 	                                    Model model) {
 
-	    OvertimeRequestDTO overtime = overtimeService.requestById(id);
+	    OvertimeRequestDTO overtime = overtimeService.getRequestById(id);
 	    if (overtime == null) {
 	        return "redirect:/approval?error=notfound";
 	    }

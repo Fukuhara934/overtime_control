@@ -59,7 +59,7 @@ public class OvertimeReportController {
 	@GetMapping("/{id}")
 	public String getReport(@AuthenticationPrincipal UserInform principal, @PathVariable Integer id,
 			@ModelAttribute OvertimeReportForm form, Model model) {
-		OvertimeRequestDTO overtime = overtimeService.requestById(id);
+		OvertimeRequestDTO overtime = overtimeService.getRequestById(id);
 		if (overtime == null) {
 			String message = messageSource.getMessage("request.id", null, Locale.getDefault());
 			model.addAttribute("message", message);
@@ -99,7 +99,7 @@ public class OvertimeReportController {
 		MOvertime overtime = modelMapper.map(form, MOvertime.class);
 		overtime.setId(id);
 		log.info(form.toString());
-		overtimeService.reportOvertime(overtime);
+		overtimeService.reportUpdate(overtime);
 
 		return "redirect:/home";
 

@@ -43,7 +43,7 @@ public class OvertimeRejectControl {
 	public String getReject(@AuthenticationPrincipal UserInform principal, @PathVariable Integer id,
 			@ModelAttribute OvertimeApprovalForm form, Model model) {
 		log.info(form.toString());
-		OvertimeApprovalDTO overtime = overtimeService.getOvertimeApproval(id);
+		OvertimeApprovalDTO overtime = overtimeService.getApprovalById(id);
 		
 		
 		model.addAttribute("overtime", overtime);
@@ -75,7 +75,7 @@ public class OvertimeRejectControl {
 		
 		log.info(form.toString());
 		//Updateに変更
-		overtimeService.approvalOvertime(overtime);
+		overtimeService.approvalUpdate(overtime);
 		return "redirect:/home/approval";
 		
 	}

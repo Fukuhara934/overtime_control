@@ -60,14 +60,12 @@ public class OvertimeRequestDTO {
         private LocalDateTime submitTime;
     }
 
-    // 空のDTOを作るときも、各フィールドは必ずnullでなくオブジェクトになるように初期化
     public OvertimeRequestDTO() {
         this.user = new UserInfo();
         this.department = new DepartmentInfo();
         this.request = new RequestInfo();
         this.approval = new ApprovalInfo();
         this.report = new ReportInfo();
-        // id, status はnullでも問題ないケースが多いので初期化不要
     }
 
     public OvertimeRequestDTO(MOvertime overtime) {

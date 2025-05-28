@@ -59,7 +59,7 @@
 	</resultMap>
 
 	<!-- Status１,２,３取得 -->
-	<select id="selectByUserIdRequest" resultMap="MOvertime">
+	<select id="selectRequestByUserId" resultMap="MOvertime">
 		select
 			mo.id,
 			mo.pattern,
@@ -226,7 +226,7 @@
 	</update>
 	
 	<!-- ユーザーidからStatus ４ を取得 -->
-	<select id="selectByUserIdReported" resultMap="MOvertime" parameterType="int">
+	<select id="selectReportedByUserId" resultMap="MOvertime" parameterType="int">
 		select
 			mo.id,
 			mo.pattern,
