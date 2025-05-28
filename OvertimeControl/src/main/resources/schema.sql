@@ -1,42 +1,44 @@
 CREATE TABLE IF NOT EXISTS department
 (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   department_name VARCHAR (50) NOT NULL
+   id SERIAL PRIMARY KEY,
+   department_name VARCHAR(50) NOT NULL
 );
+
 CREATE TABLE IF NOT EXISTS m_user
 (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   email VARCHAR (255) UNIQUE NOT NULL,
-   password VARCHAR (255) NOT NULL,
-   family_name VARCHAR (50) NOT NULL,
-   first_name VARCHAR (50) NOT NULL,
+   id SERIAL PRIMARY KEY,
+   email VARCHAR(255) UNIQUE NOT NULL,
+   password VARCHAR(255) NOT NULL,
+   family_name VARCHAR(50) NOT NULL,
+   first_name VARCHAR(50) NOT NULL,
    role INT NOT NULL,
    department_id INT NOT NULL,
-   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   FOREIGN KEY (department_id) REFERENCES department (id)
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES department(id)
 );
+
 CREATE TABLE IF NOT EXISTS m_overtime
 (
-   id INT AUTO_INCREMENT PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
    department_id INT NOT NULL,
    user_id INT NOT NULL,
    pattern INT,
-   request_start_time DATETIME,
-   request_finish_time DATETIME,
+   request_start_time TIMESTAMP,
+   request_finish_time TIMESTAMP,
    reason TEXT,
    approver_id INT,
-   approval_time DATETIME,
+   approval_time TIMESTAMP,
    reject_reason TEXT,
-   report_start_time DATETIME,
-   report_finish_time DATETIME,
+   report_start_time TIMESTAMP,
+   report_finish_time TIMESTAMP,
    breaktime INT,
    report TEXT,
-   submit_time DATETIME,
+   submit_time TIMESTAMP,
    status INT,
-   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   FOREIGN KEY (department_id) REFERENCES department (id),
-   FOREIGN KEY (user_id) REFERENCES m_user (id),
-   FOREIGN KEY (approver_id) REFERENCES m_user (id)
-); 
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   CONSTRAINT fk_department_ot FOREIGN KEY (department_id) REFERENCES department(id),
+   CONSTRAINT fk_user_ot FOREIGN KEY (user_id) REFERENCES m_user(id),
+   CONSTRAINT fk_approver_ot FOREIGN KEY (approver_id) REFERENCES m_user(id)
+);
