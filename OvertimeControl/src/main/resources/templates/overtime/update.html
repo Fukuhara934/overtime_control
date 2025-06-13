@@ -17,7 +17,7 @@
 			<textarea class="form-control" th:text="${rejectReason}" readonly rows="3"></textarea>
 		</div>
 
-		<form method="post" th:action="@{/request/update/{id}(id=${overtimeId})}"
+		<form method="post" th:action="@{/overtime/request/update/{id}(id=${overtimeId})}"
 			th:object="${overtimeRequestForm}">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	

@@ -42,8 +42,8 @@
 											<td th:text="${overtime.request.reason}">理由</td>
 											<td th:text="${overtime.status.status}">状態</td>
 											<td>
-												<a th:href="@{/success/{id}(id=${overtime.id})}" class="btn btn-success btn-sm">承認</a>
-												<a th:href="@{/reject/{id}(id=${overtime.id})}" class="btn btn-danger btn-sm">却下</a>
+												<a th:href="@{approval/success/{id}(id=${overtime.id})}" class="btn btn-success btn-sm mb-1">承認</a>
+												<a th:href="@{approval/reject/{id}(id=${overtime.id})}" class="btn btn-danger btn-sm mb-1">却下</a>
 											</td>
 										</tr>
 									</tbody>

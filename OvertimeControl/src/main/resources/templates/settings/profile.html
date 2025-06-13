@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>プロフィール設定</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1>プロフィール設定</h1>
+
+    <form th:action="@{/settings/profile}" th:object="${userProfileForm}" method="post">
+        <div>
+            <label>姓（Family Name）:</label>
+            <input type="text" th:field="*{familyName}" placeholder="例: 山田"/>
+        </div>
+
+        <div>
+            <label>名（First Name）:</label>
+            <input type="text" th:field="*{firstName}" placeholder="例: 太郎"/>
+        </div>
+
+        <div>
+            <label>メールアドレス:</label>
+            <input type="email" th:field="*{email}" placeholder="例: yamada@example.com"/>
+        </div>
+
+        <div>
+            <label>所属部署:</label>
+            <input type="text" th:field="*{department}" readonly/>
+        </div>
+
+        <div>
+            <button type="submit">保存</button>
+        </div>
+    </form>
+
+</body>
+</html>
+
+</body>
+</html>

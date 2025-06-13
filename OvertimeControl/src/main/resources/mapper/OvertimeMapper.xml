@@ -30,6 +30,8 @@
 		<!-- ステータス -->
 		<result property="status" column="status"
 		typeHandler="overtime_control.infrastructure.typeHandler.OvertimeStatusTypeHandler"/>
+		<!-- 表示用のナンバー -->
+		<result property="displayNumber" column="display_number"/>
 		
 		
 		<!-- 申請者 -->
@@ -57,109 +59,6 @@
 			<result property="departmentName" column="department_name"/>
 		</association>
 	</resultMap>
-
-	<!-- Status１,２,３取得 -->
-	<select id="selectRequestByUserId" resultMap="MOvertime">
-		select
-			mo.id,
-			mo.pattern,
-			mo.request_start_time,
-			mo.request_finish_time,
-			mo.reason,
-			mo.status,
-			mo.approver_id,
-			mo.reject_reason,
-			mo.approval_time,
-			mo.report_start_time,
-			mo.report_finish_time,
-			mo.breaktime,
-			mo.report,
-			mo.submit_time,
-			d.id as department_id,
-			d.department_name,
-			u.id as user_id,
-			u.family_name as user_family_name,
-			u.first_name as user_first_name,
-			u.role AS user_role,
-			a.id AS approver_id,
-			a.family_name as approver_family_name,
-			a.first_name as approver_first_name,
-			a.role as approver_role
-		from
-			m_overtime mo
-		left join department d on mo.department_id = d.id
-		left join m_user u on mo.user_id = u.id
-		left join m_user a on mo.approver_id = a.id
-		where 
-			mo.user_id = #{userId}
-		and
-			mo.status in (1, 2, 3)
-		order by mo.request_start_time desc
-		
-	</select>
-	
-	<!-- status 1取得 -->
-	<select id="findAllApproval" resultMap="MOvertime">
-	SELECT
-			mo.id,
-			mo.pattern,
-			mo.request_start_time,
-			mo.request_finish_time,
-			mo.reason,
-			mo.status,
-			d.id AS department_id,
-			d.department_name,
-			u.id AS user_id,
-			u.family_name AS user_family_name,
-			u.first_name AS user_first_name,
-			u.role AS user_role
-		FROM
-			m_overtime mo
-		LEFT JOIN department d ON mo.department_id = d.id
-		LEFT JOIN m_user u ON mo.user_id = u.id
-		where
-			status = 1
-	
-	</select>
-	
-	<!-- 一件取得 -->
-	<select id="selectById" resultMap="MOvertime">
-		select
-			mo.id,
-			mo.pattern,
-			mo.request_start_time,
-			mo.request_finish_time,
-			mo.reason,
-			mo.status,
-			mo.approver_id,
-			mo.reject_reason,
-			mo.approval_time,
-			mo.report_start_time,
-			mo.report_finish_time,
-			mo.breaktime,
-			mo.report,
-			mo.submit_time,
-			d.id AS department_id,
-			d.department_name,
-			u.id AS user_id,
-			u.family_name AS user_family_name,
-			u.first_name AS user_first_name,
-			u.role AS user_role,
-			a.id AS approver_id,
-			a.family_name AS approver_family_name,
-			a.first_name AS approver_first_name,
-			a.role AS approver_role
-		from
-			m_overtime mo
-		left join
-			department d on mo.department_id = d.id
-		left join
-			m_user u on mo.user_id = u.id
-		left join
-			m_user a on mo.approver_id = a.id
-		where 
-			mo.id = #{id}
-	</select>
 	
 	<!-- 申請 -->
 	<insert id="insertRequest">
@@ -192,7 +91,7 @@
 			request_start_time = #{requestStartTime},
 			request_finish_time = #{requestFinishTime},
 			reason = #{reason},
-			status = #{status}
+			status = 1
 		where 
 			id = #{id}
 	</update>
@@ -225,6 +124,134 @@
 			id = #{id}
 	</update>
 	
+	<!-- 申請の削除 -->
+	<delete id="deleteRequest">
+		delete from
+			m_overtime
+		where
+			id = #{id}
+		and
+			status = 1
+	</delete>
+
+	<!-- Status１,２,３取得 -->
+	<select id="selectRequestByUserId" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.reject_reason,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name as approver_family_name,
+			a.first_name as approver_first_name,
+			a.role as approver_role,
+		row_number() over (
+		partition by 
+			u.id 
+		order by 
+			mo.request_start_time desc
+			) as display_number
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		left join m_user a on mo.approver_id = a.id
+		where 
+			mo.user_id = #{userId}
+		and
+			mo.status in (1, 2, 3)
+		order by mo.request_start_time desc
+		
+	</select>
+	
+	
+	
+	
+	<!-- status 1取得 -->
+	<select id="findAllApproval" resultMap="MOvertime">
+	select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			d.id AS department_id,
+			d.department_name,
+			u.id AS user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			u.role AS user_role
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		where
+			status = 1
+	
+	</select>
+	
+	<!-- 一件取得 -->
+	<select id="selectById" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.reject_reason,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id AS department_id,
+			d.department_name,
+			u.id AS user_id,
+			u.family_name AS user_family_name,
+			u.first_name AS user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name AS approver_family_name,
+			a.first_name AS approver_first_name,
+			a.role AS approver_role,
+		row_number() over (
+		partition by 
+			u.id 
+		order by 
+			mo.request_start_time desc
+			) as display_number
+		from
+			m_overtime mo
+		left join
+			department d on mo.department_id = d.id
+		left join
+			m_user u on mo.user_id = u.id
+		left join
+			m_user a on mo.approver_id = a.id
+		where 
+			mo.id = #{id}
+	</select>
+	
 	<!-- ユーザーidからStatus ４ を取得 -->
 	<select id="selectReportedByUserId" resultMap="MOvertime" parameterType="int">
 		select
@@ -250,7 +277,13 @@
 			a.id AS approver_id,
 			a.family_name as approver_family_name,
 			a.first_name as approver_first_name,
-			a.role as approver_role
+			a.role as approver_role,
+		row_number() over (
+		partition by 
+			u.id 
+		order by 
+			mo.request_start_time desc
+			) as display_number
 		from
 			m_overtime mo
 		left join department d on mo.department_id = d.id
@@ -262,6 +295,56 @@
 			mo.status = 4
 		order by mo.request_start_time desc
 	</select>
+	
+	
+	<select id="findByUserIdAndDateBetween" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			mo.approver_id,
+			mo.approval_time,
+			mo.report_start_time,
+			mo.report_finish_time,
+			mo.breaktime,
+			mo.report,
+			mo.submit_time,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			u.role AS user_role,
+			a.id AS approver_id,
+			a.family_name as approver_family_name,
+			a.first_name as approver_first_name,
+			a.role as approver_role,
+		row_number() over (
+		partition by 
+			u.id 
+		order by 
+			mo.request_start_time desc
+			) as display_number
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		left join m_user a on mo.approver_id = a.id
+		where 
+			mo.user_id = #{userId}
+		and
+			mo.status = 4
+		and
+			mo.report_start_time between #{startDate} and #{finishDate}
+			
+		order by 
+			mo.request_start_time desc
+		limit #{limit} offset #{offset}
+	</select>
+	
 
 	<!-- 残業申請idからの一件取得 -->
 	<select id="findById" resultMap="MOvertime">
@@ -310,7 +393,7 @@
 	    and 
 	    	user_id = #{userId}
 	    and 
-	    	status = 2 
+	    	status = #{status} 
 	</select>
 	
 	<!-- 存在チェック -->
@@ -323,7 +406,19 @@
 	    and 
 	    	status = 1
 	</select>
-	
+
+	<select id="countByUserIdAndPeriodAndStatus" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM 
+		m_overtime
+	WHERE 
+		user_id = #{userId}
+	AND 
+		report_start_time BETWEEN #{startDate} AND #{finishDate}
+	AND 
+		status = #{status}
+	</select>
 	
 
 </mapper>

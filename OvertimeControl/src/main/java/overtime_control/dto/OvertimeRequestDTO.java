@@ -12,6 +12,7 @@ import overtime_control.domain.model.WorkPattern;
 @Data
 public class OvertimeRequestDTO {
     private Integer id;
+    private Integer displayNumber;
     private UserInfo user;
     private DepartmentInfo department;
     private RequestInfo request;
@@ -70,6 +71,7 @@ public class OvertimeRequestDTO {
 
     public OvertimeRequestDTO(MOvertime overtime) {
         this.id = overtime.getId();
+        this.displayNumber = overtime.getDisplayNumber();
 
         // ユーザー情報
         MUser user = overtime.getUser();

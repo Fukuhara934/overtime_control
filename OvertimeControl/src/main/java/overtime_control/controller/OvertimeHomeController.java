@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 import overtime_control.domain.service.OvertimeService;
 import overtime_control.domain.userInform.UserInform;
-import overtime_control.dto.OvertimeApprovalDTO;
 import overtime_control.dto.OvertimeRequestDTO;
 
 @Controller
@@ -35,15 +34,4 @@ public class OvertimeHomeController {
 
 		return "overtime/home";
 	}
-	
-	//承認者用
-	@GetMapping("/approval")
-	public String getApproval(@AuthenticationPrincipal UserInform principal, Model model) {
-		//申請一覧取得
-		List<OvertimeApprovalDTO> overtimes = overtimeService.getAllApproval();
-		model.addAttribute("overtimeApproval", overtimes);
-
-		return "approval/home";
-	}
-
 }

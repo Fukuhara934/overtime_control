@@ -12,6 +12,7 @@ import overtime_control.domain.model.WorkPattern;
 @Data
 public class OvertimeDTO {
     private Integer id;
+    private Integer displayNumber;
     private UserInfo user;
     private DepartmentInfo department;
     private RequestInfo request;
@@ -60,18 +61,18 @@ public class OvertimeDTO {
         private LocalDateTime submitTime;
     }
 
-    // 空のDTOを作るときも、各フィールドは必ずnullでなくオブジェクトになるように初期化
     public OvertimeDTO() {
         this.user = new UserInfo();
         this.department = new DepartmentInfo();
         this.request = new RequestInfo();
         this.approval = new ApprovalInfo();
         this.report = new ReportInfo();
-        // id, status はnullでも問題ないケースが多いので初期化不要
+        this.displayNumber = getDisplayNumber();
     }
 
     public OvertimeDTO(MOvertime overtime) {
         this.id = overtime.getId();
+        this.displayNumber = overtime.getDisplayNumber();
 
         // ユーザー情報
         MUser user = overtime.getUser();

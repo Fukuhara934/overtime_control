@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+	layout:decorate="~{layout/layout}">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,7 +12,7 @@
 		<div class="container py-4 mt-2">
 			<div class="d-flex justify-content-between align-items-center">
 				<h1 class="text-center flex-grow-1 m-0">残業管理</h1>
-				<a th:href="@{home/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
+				<a th:href="@{/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
 			</div>
 
 			<div class="row mb-4">
@@ -25,21 +26,10 @@
 							<div class="card">
 								<div class="card-header">新規申請</div>
 								<div class="text-center mt-2">
-									<a th:href="@{/request}" class="btn btn-primary">申請書作成へ</a>
+									<a th:href="@{/overtime/request}" class="btn btn-primary">申請書作成へ</a>
 								</div>
 								<div class="card-body">
 									<p class="card-text">残業申請が必要な方はこちらからお願いします。</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 mb-4">
-							<div class="card">
-								<div class="card-header">印刷</div>
-								<div class="text-center mt-2">
-									<a class="btn btn-success" th:href="@{/print}">申請書の印刷</a>
-								</div>
-								<div class="card-body">
-									<p class="=card-text">筆記での記入がよい方はこちらから上長と相談の上ご利用ください。</p>
 								</div>
 							</div>
 						</div>
@@ -55,6 +45,7 @@
 								<table class="table table-bordered m-0 text-center">
 									<thead class="table-light">
 										<tr>
+											<th>番号</th>
 											<th>残業日時</th>
 											<th>理由</th>
 											<th>状態</th>
@@ -62,9 +53,9 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="requests : ${overtimeRequests}" th:if="${requests.status.id <= 3}">
-											<td
-												th:text="${#temporals.format(requests.request.startTime,
+										<tr th:each="requests : ${overtimeRequests}">
+											<td th:text="${requests.displayNumber}"></td>
+											<td th:text="${#temporals.format(requests.request.startTime,
 												'MM/dd HH:mm')} + ' ～ ' + ${#temporals.format(requests.request.finishTime, 'HH:mm')}">
 												04/01 18:00 ～ 20:00
 											</td>
@@ -75,24 +66,41 @@
 											</td>
 											<td th:text="${requests.status.status}">申請中</td>
 											<td>
-												<a th:if="${requests.status.status == '申請中'}"
-													class="btn btn-primary btn-sm mb-1"
-													th:href="@{/request/update/{id}(id=${requests.id})}">
-													編集へ
-												</a>
-												<a th:if="${requests.status.status == '承認'}"
-													class="btn btn-success btn-sm mb-1"
-													th:href="@{/report/{id}(id=${requests.id})}">
-													報告へ
-												</a>
-												<a th:if="${requests.status.status == '却下'}"
-													class="btn btn-danger btn-sm mb-1"
-													th:href="@{/request/update/{id}(id=${requests.id})}">
-													再申請
-												</a>
-												<a th:if="${requests.status.status == '承認'}"
-												   class="btn btn-success btn-sm mb-1"
-												   th:href="@{/print/{id}(id=${requests.id})}">印刷</a>
+												<div class="d-flex gap-2 justify-content-center flex-wrap">
+													<!-- 編集ボタン -->
+													<a th:if="${requests.status.status == '申請中'}"
+														class="btn btn-primary btn-sm mb-1"
+														th:href="@{/overtime/request/update/{id}(id=${requests.id})}">
+														編集へ
+													</a>
+													<!-- 削除フォーム -->
+													<form th:if="${requests.status.status == '申請中'}"
+														th:action="@{/overtime/delete/{id}(id=${requests.id})}" method="post">
+														<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+														<input type="submit" value="削除"
+															class="btn btn-danger btn-sm mb-1" />
+													</form>
+													<!-- 再申請ボタン -->
+													<a th:if="${requests.status.status == '却下'}"
+														class="btn btn-primary btn-sm mb-1"
+														th:href="@{/overtime/request/update/{id}(id=${requests.id})}">
+														再申請
+													</a>
+
+													<!-- 報告ボタン -->
+													<a th:if="${requests.status.status == '承認'}"
+														class="btn btn-success btn-sm mb-1"
+														th:href="@{/overtime/report/{id}(id=${requests.id})}">
+														報告へ
+													</a>
+
+													<!-- 印刷ボタン -->
+													<a th:if="${requests.status.status == '承認'}"
+														class="btn btn-success btn-sm mb-1"
+														th:href="@{/print/{id}(id=${requests.id})}">
+														印刷
+													</a>
+												</div>
 											</td>
 										</tr>
 									</tbody>
@@ -101,7 +109,6 @@
 						</div>
 					</div>
 				</div>
-
 
 			</div> <!-- row -->
 		</div> <!-- container -->

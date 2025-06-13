@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class OvertimeReportForm {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime reportFinishTime;
 	
+	@Min(value = 0, message = "休憩時間は0分以上で入力してください")
 	private Integer breaktime;
 	
 	@NotBlank(message = "報告を記入してください")

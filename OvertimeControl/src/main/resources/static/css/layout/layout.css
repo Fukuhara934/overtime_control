@@ -16,23 +16,32 @@
 	overflow-y: auto;
 }
 
-th:nth-child(1), td:nth-child(1) {
-	width:180px
+th:nth-child(1),
+td:nth-child(1) {
+	width: 50px;
 }
 
-th:nth-child(2), td:nth-child(2) {
+th:nth-child(2),
+td:nth-child(2) {
+	width: 150px;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
 	width: 200px;
 }
 
-th:nth-child(3), td:nth-child(3) {
+th:nth-child(4),
+td:nth-child(4) {
 	width: 125px;
 }
 
-th:nth-child(4), td:nth-child(4) {
+th:nth-child(5),
+td:nth-child(5) {
 	width: 125px;
 }
 
-.btn-dashboard{
+.btn-dashboard {
 
 	font-size: 1.1rem;
 	width: 100%;
@@ -58,6 +67,37 @@ th:nth-child(4), td:nth-child(4) {
 	.card-custom {
 		min-height: 120px;
 	}
+
+	@media (max-width: 767px) {
+
+		th,
+		td {
+			font-size: 0.85rem;
+			padding: 6px;
+		}
+
+		th:nth-child(1),
+		td:nth-child(1) {
+			width: 30px;
+		}
+
+		th:nth-child(2),
+		td:nth-child(2),
+		th:nth-child(3),
+		td:nth-child(3),
+		th:nth-child(4),
+		td:nth-child(4),
+		th:nth-child(5),
+		td:nth-child(5) {
+			width: auto;
+			white-space: nowrap;
+		}
+
+		.overtime_list {
+			overflow-x: auto;
+		}
+	}
+
 
 	.inform-status {
 		min-height: 140px;

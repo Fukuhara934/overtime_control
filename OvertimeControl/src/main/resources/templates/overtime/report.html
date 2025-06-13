@@ -25,10 +25,18 @@
 				<th>報告日</th>
 				<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></td>
 			</tr>
+			<tr>
+				<th>勤務パターン</th>
+				<td th:text="${overtime.request.pattern.displayName}"></td>
+			</tr>
+			<tr>
+				<th>承認者</th>
+				<td th:text="${overtime.approval.approverName}"></td>
+			</tr>
 		</table>
 
 
-		<form method="post" th:action="@{'/report/' + ${overtime.id}}" th:object="${overtimeReportForm}">
+		<form method="post" th:action="@{/overtime/report/{id}(id=${overtimeId})}" th:object="${overtimeReportForm}">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="form-group">
 				<label for="reportStartTime">実残業開始時間</label>

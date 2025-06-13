@@ -8,6 +8,8 @@ import lombok.Data;
 public class MOvertime {
 	/*申請書部分*/
 	private Integer id;
+	/*表示用の数字*/
+	private Integer displayNumber;
 	/*部署名*/
 	private Department department;
 	/*申請者名*/
