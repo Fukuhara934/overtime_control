@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/layout}">
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>パスワードの変更画面</title>
+<title>Eメール変更画面</title>
 </head>
-
 <body>
 	<div layout:fragment="content">
 		<div class=" row mt-3">
@@ -24,38 +23,34 @@ layout:decorate="~{layout/layout}">
 				<h5 class="mb-0">パスワード変更</h5>
 			</div>
 			<div class="card-body">
-				<form th:action="@{/setting/password}" method="post" th:object="${passwordForm}">
+				<form th:action="@{/setting/email}" method="post" th:object="${emailChangeForm}">
 					<div class="mb-3">
-						<label for="currentPassword">現在のパスワード</label>
-						<input type="password" th:field="*{currentPassword}" class="form-control"
-						th:errorclass="is-invalid" />
-						<div class="invalid-feedback" th:errors="*{currentPassword}"></div>
+						<label for="currentEmail">現在のEメール</label>
+						<input type="email" id="currentEmail" class="form-control text-center" th:value="${email}"
+							readonly />
 					</div>
-					
 					<div class="mb-3">
-						<label for="newPassword">新しいパスワード</label>
-						<input type="password" th:field="*{newPassword}" class="form-control"
-						th:errorclass="is-invalid" />
-						<div class="invalid-feedback" th:errors="*{newPassword}"></div>
+						<label for="newEmail">新しいEメール</label>
+						<input type="text" th:field="*{newEmail}" class="form-control" th:errorclass="is-invalid" />
+						<div class="invalid-feedback" th:errors="*{newEmail}"></div>
 					</div>
-					
 					<div class="mb-3">
-						<label for="confirmPassword">確認用パスワード</label>
-						<input type="password" th:field="*{confirmPassword}" class="form-control"
-						th:errorclass="is-invalid" />
-						<div class="invalid-feedback" th:errors="*{confirmPassword}"></div>
+						<label for="password">パスワード</label>
+						<input type="password" th:field="*{password}" class="form-control" th:errorclass="is-invalid" />
+						<div class="invalid-feedback" th:errors="*{password}"></div>
 					</div>
 					<div class="text-end mt-3">
-						<button class="btn btn-warning">パスワードを変更</button>
+						<button class="btn btn-warning">Eメールを変更</button>
 					</div>
 					<div class="text-end mt-3">
 						<a th:href="@{/setting}">ユーザー情報に戻る</a>
-					</div>	
+					</div>
 				</form>
-				
+
 			</div>
 		</div>
 	</div>
 </body>
 
+</body>
 </html>

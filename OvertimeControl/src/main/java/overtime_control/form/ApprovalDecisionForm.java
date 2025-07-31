@@ -5,7 +5,7 @@ import lombok.Data;
 import overtime_control.domain.model.OvertimeStatus;
 
 @Data
-public class OvertimeApprovalForm {
+public class ApprovalDecisionForm {
 
     private OvertimeStatus status;
     @NotBlank(message = "却下理由は必ず入力してください")

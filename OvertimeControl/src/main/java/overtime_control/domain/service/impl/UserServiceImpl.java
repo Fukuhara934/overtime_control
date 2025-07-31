@@ -40,6 +40,16 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(MUser user) {
 		userRepository.update(user);
 	}
+	
+	@Override
+	public void updatePassword(MUser user) {
+		userRepository.updatePassword(user);
+	}
+	
+	@Override
+	public void updateEmail(String email, Integer id) {
+		userRepository.updateEmail(email, id);
+	}
 
 	@Override
 	public void deleteUser(Integer id) {

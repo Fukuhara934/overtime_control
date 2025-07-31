@@ -30,8 +30,9 @@ public interface OvertimeService {
 	// --- 承認者用 ---
 	List<OvertimeApprovalDTO> getAllApproval();
 	OvertimeApprovalDTO getApprovalById(Integer id);
-	List<OvertimeDTO> getApproverOvertimeInPeriod(Integer approverId, LocalDateTime start, LocalDateTime finish, int limit, int offset);
-	public int countApproverOvertimeInPeriodandStatus(Integer approverId, LocalDateTime start, LocalDateTime finish, OvertimeStatus status);
+	public List<OvertimeDTO> getCSVOvertimeInPeriod(LocalDateTime start, LocalDateTime finish);
+	List<OvertimeDTO> getApproverOvertimeInPeriod(LocalDateTime start, LocalDateTime finish, int limit, int offset);
+	public int countApproverOvertimeInPeriodandStatus(LocalDateTime start, LocalDateTime finish, OvertimeStatus status);
 
 	// --- バリデーション・確認用 ---
 	boolean isRequestOwner(Integer overtimeId, Integer userId, Integer status);

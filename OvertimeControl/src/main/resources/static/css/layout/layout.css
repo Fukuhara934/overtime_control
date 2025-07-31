@@ -62,18 +62,35 @@ td:nth-child(5) {
 	background-color: #0b5ed7;
 }
 
+.setting-card {
+	width: 600px;
+}
+
+.card,
+.btn-dashboard {
+	user-select: none;
+}
+
 /*スマホで見たいときに*/
-@media (min-width: 768px) {
+@media (max-width: 768px) {
 	.card-custom {
 		min-height: 120px;
 	}
+	.inform-status {
+		min-height: 140px;
+	}
+}
 
-	@media (max-width: 767px) {
-
+@media (max-width:  576px) {
+	
 		th,
 		td {
 			font-size: 0.85rem;
 			padding: 6px;
+		}
+		
+		th.th-mail{
+			width:100px !important;
 		}
 
 		th:nth-child(1),
@@ -96,15 +113,13 @@ td:nth-child(5) {
 		.overtime_list {
 			overflow-x: auto;
 		}
-	}
+
+		.setting-card {
+			width: 400px;
+		}
 
 
 	.inform-status {
 		min-height: 140px;
 	}
-}
-
-.card,
-.btn-dashboard {
-	user-select: none;
 }

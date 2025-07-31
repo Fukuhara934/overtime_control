@@ -87,32 +87,38 @@ public class OvertimeServiceImpl implements OvertimeService {
 	
 
 	//承認者用
+	@Override
 	public List<OvertimeApprovalDTO> getAllApproval() {
 		List<MOvertime> overtimes = overtimeRepository.findAllApproval();
 		return overtimes.stream().map(overtime -> new OvertimeApprovalDTO(overtime)).collect(Collectors.toList());
 	}
 
+	@Override
 	public OvertimeApprovalDTO getApprovalById(Integer id) {
 		MOvertime overtime = overtimeRepository.findById(id);
 		return new OvertimeApprovalDTO(overtime);
 	}
+	
+	
 	//期間指定して全ユーザーの残業を検索
-	public List<OvertimeDTO> getApprovelOvertimeInPeriod(Integer id, LocalDateTime startDate,
-														 LocalDateTime finishDate,int limit, int offset) {
-		List<MOvertime> overtimes = overtimeRepository.findByIdAndDateBetween(id, startDate, finishDate, limit, offset);
+	@Override
+	public List<OvertimeDTO> getApproverOvertimeInPeriod(LocalDateTime start,
+														 LocalDateTime finish,
+														 int limit, int offset) {
+		List<MOvertime> overtimes = overtimeRepository.findByDateBetween(start, finish, limit, offset);
 		return overtimes.stream().map(overtime -> new OvertimeDTO(overtime)).collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<OvertimeDTO> getApproverOvertimeInPeriod(Integer approverId, LocalDateTime start, LocalDateTime finish, int limit, int offset) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	public List<OvertimeDTO> getCSVOvertimeInPeriod(LocalDateTime start,
+													LocalDateTime finish) {
+		List<MOvertime> overtimes = overtimeRepository.findAllByDateBetween(start, finish);
+		return overtimes.stream().map(overtime -> new OvertimeDTO(overtime)).collect(Collectors.toList());
 	}
 
 	@Override
-	public int countApproverOvertimeInPeriodandStatus(Integer approverId, LocalDateTime start, LocalDateTime finish, OvertimeStatus status) {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+	public int countApproverOvertimeInPeriodandStatus(LocalDateTime start, LocalDateTime finish, OvertimeStatus status) {
+		return overtimeRepository.countApproverOvertimeInPeriodandStatus(start, finish, status);
 	}
 	
 

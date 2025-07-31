@@ -20,18 +20,28 @@
 	</resultMap>
 
 	<select id="findAll" resultMap="MUser">
-		select u.*,d.department_name
+		select 
+			u.*,d.department_name
 		from
-		m_user u
+			m_user u
 		join department d on u.department_id = d.id
 	</select>
 
 	<select id="findById" resultMap="MUser">
-		select u.*, d.department_name
+		select 
+			u.id,
+			u.email,
+			u.password,
+			u.family_name,
+			u.first_name,
+			u.role,
+			d.id as department_id, 
+			d.department_name
+			
 		from
-		m_user u
+			m_user u
 		join department d on u.department_id = d.id
-		where u.id = #{id}
+			where u.id = #{id}
 	</select>
 
 	<select id="findByEmail" resultMap="MUser">
@@ -65,12 +75,26 @@
 		update m_user
 		set 
 		email = #{email},
-		password = #{password},
 		family_name = #{familyName},
 		first_name = #{firstName},
-		role = #{role.id},
 		department_id = #{department.id}
 		where id = #{id}
+	</update>
+	
+	<update id="updatePassword">
+		update m_user
+		set
+			password = #{password}
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateEmail">
+		update m_user
+		set
+			email = #{email}
+		where
+			id = #{id}
 	</update>
 
 	<delete id="delete">

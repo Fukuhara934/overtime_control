@@ -62,7 +62,7 @@ public class OvertimeController {
 		model.addAttribute("workPatternList", WorkPattern.values());
 		model.addAttribute("today", LocalDate.now());
 		
-		return "overtime/request";
+		return "overtime/apply/form";
 	}
 
 	@PostMapping("/request")
@@ -100,7 +100,7 @@ public class OvertimeController {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("workPatternList", WorkPattern.values());
 			model.addAttribute("today", LocalDate.now());
-			return "overtime/request";
+			return "overtime/apply/form";
 		}
 		
 		log.info(form.toString());
@@ -110,7 +110,7 @@ public class OvertimeController {
 		overtime.setDepartment(user.getDepartment());
 		overtimeService.requestOvertime(overtime);
 
-		return "redirect:/home";
+		return "redirect:/dashboard";
 	}
 
 	
@@ -119,19 +119,19 @@ public class OvertimeController {
 	// ② 残業申請：更新（修正）画面の表示・処理
 	// ======================================
 	
-	@GetMapping("request/update/{id}")
+	@GetMapping("edit/{id}")
 	public String showUpdateRequestForm(@AuthenticationPrincipal UserInform principal,
 										@PathVariable Integer id,
 										Model model) {
 
 		OvertimeRequestDTO overtime = overtimeService.getRequestById(id);
 		if (overtime == null) {
-			return "redirect:/home?error=notfound";
+			return "redirect:/dashboard?error=notfound";
 		}
 
 		MUser user = userService.getUserByEmail(principal.getUsername());
 		if (user == null) {
-			return "redirect:/home";
+			return "redirect:/dashboard";
 		}
 
 		OvertimeRequestForm form = modelMapper.map(overtime, OvertimeRequestForm.class);
@@ -147,10 +147,10 @@ public class OvertimeController {
 			model.addAttribute("rejectReason", overtime.getApproval().getRejectReason());
 		}
 
-		return "overtime/update";
+		return "overtime/apply/edit";
 	}
 
-	@PostMapping("request/update/{id}")
+	@PostMapping("/edit/{id}")
 	public String updateRequestOvertime(@AuthenticationPrincipal UserInform principal,
 			@PathVariable Integer id,
 			@ModelAttribute @Validated OvertimeRequestForm form,
@@ -174,7 +174,7 @@ public class OvertimeController {
 			model.addAttribute("workPatternList", WorkPattern.values());
 			model.addAttribute("today", LocalDate.now());
 			model.addAttribute("overtimeId", id);
-			return "overtime/update";
+			return "overtime/apply/edit";
 		}
 
 		log.info("id{}", id);
@@ -186,7 +186,7 @@ public class OvertimeController {
 
 		overtimeService.requestUpdate(overtime);
 
-		return "redirect:/home";
+		return "redirect:/dashboard";
 	}
 	
 	
@@ -201,12 +201,12 @@ public class OvertimeController {
 
 		OvertimeRequestDTO overtime = overtimeService.getRequestById(id);
 		if (overtime == null) {
-			return "redirect:/home";
+			return "redirect:/dashboard";
 		}
 
 		MUser user = userService.getUserByEmail(principal.getUsername());
 		if (user == null) {
-			return "redirect:/home";
+			return "redirect:/dashboard";
 		}
 		if (!model.containsAttribute("overtimeReportForm")) {
 			OvertimeReportForm form = new OvertimeReportForm();
@@ -218,7 +218,7 @@ public class OvertimeController {
 		model.addAttribute("today", LocalDate.now());
 		model.addAttribute("overtimeId", id);
 		model.addAttribute("overtime", overtime);
-		return "overtime/report";
+		return "overtime/report/form";
 	}
 
 	@PostMapping("report/{id}")
@@ -267,7 +267,7 @@ public class OvertimeController {
 			model.addAttribute("overtimeId", id);
 			model.addAttribute("today", LocalDate.now());
 			model.addAttribute("overtime", request);
-			return "overtime/report";
+			return "overtime/report/form";
 		}
 
 		if (form.getBreaktime() == null) {
@@ -278,7 +278,7 @@ public class OvertimeController {
 		report.setId(id);
 		overtimeService.reportUpdate(report);
 
-		return "redirect:/home";
+		return "redirect:/dashboard";
 	}
 
 	
@@ -287,7 +287,7 @@ public class OvertimeController {
 	// ④ 報告一覧及び検索機能
 	// ======================================
 	
-	@GetMapping("/reported")
+	@GetMapping("/list")
 	public String showReport(@AuthenticationPrincipal UserInform principal,
 			@ModelAttribute @Validated OvertimeSearchForm form,
 			BindingResult result, Model model) {
@@ -325,7 +325,7 @@ public class OvertimeController {
 		model.addAttribute("startDate", form.getStartDate());
 		model.addAttribute("finishDate", form.getFinishDate());
 
-		return "overtime/reported";
+		return "overtime/list";
 	}
 	
 	
@@ -341,6 +341,6 @@ public class OvertimeController {
 		}
 		
 		overtimeService.requestDelete(id);
-		return "redirect:/home";
+		return "redirect:/dashboard";
 	}
 }

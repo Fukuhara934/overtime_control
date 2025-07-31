@@ -41,7 +41,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 				loginUser.getId(),
 				loginUser.getFamilyName(),
 				loginUser.getFirstName(),
-				loginUser.getDepartment().getDepartmentName());
+				loginUser.getDepartment().getDepartmentName(),
+				loginUser.getDepartment().getId());
 
 	}
 }

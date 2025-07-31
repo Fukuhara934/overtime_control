@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/css/overtime/print.css}">
 <title>残業申請書 印刷用フォーム</title>
 </head>
@@ -12,20 +12,19 @@
 		<h1>残業申請書</h1>
 
 		<section>
-			
 			<div class="field-row">
 				<div class="field-label">部署名</div>
 				<div class="field-value" th:text="${overtime.department.departmentName ?: ''}">部署名</div>
 			</div>
 			<div class="field-row">
 				<div class="field-label">申請者名</div>
-				<div class="field-value" th:text="${(overtime.user.familyName ?: '') + ' ' + (overtime.user.firstName ?: '')}">申請者名
+				<div class="field-value"
+					th:text="${(overtime.user.familyName ?: '') + ' ' + (overtime.user.firstName ?: '')}">申請者名
 				</div>
 			</div>
 			<div class="field-row">
 				<div class="field-label">勤務パターン</div>
-				<div class="field-value" 
-				th:text="${overtime.request.pattern.id
+				<div class="field-value" th:text="${overtime.request.pattern.id
 				 != 0 ? overtime.request.pattern.displayName : '通常 ・ 早出 ・ 遅出 A ・ B ・ C ・ D ・ E ・ F ・ G'}"></div>
 			</div>
 			<div class="field-row">
@@ -50,23 +49,27 @@
 			</div>
 			<div class="field-row">
 				<div class="field-label">承認日時</div>
-				<div class="field-value datetime"
-					th:text="${#temporals.format(overtime.approval.approvalTime, 'yyyy-MM-dd')}">2025-01-02 09:00
+				<div class="field-value datetime text-center"
+					th:text="${#temporals.format(overtime.approval.approvalTime, 'yyyy/MM/dd')}">2025-01-02 09:00
 				</div>
 			</div>
 		</section>
 
 		<section>
-			
+
 			<div class="field-row">
 				<div class="field-label">実残業時間</div>
 				<div class="field-value datetime text-center"
-					th:text="|${#temporals.format(overtime.report.startTime, 'MM/dd HH:mm')?: ''} ～ ${#temporals.format(overtime.report.finishTime, 'MM/dd HH:mm')?: ''}|"></div>
+					th:text="|${#temporals.format(overtime.report.startTime, 'MM/dd HH:mm')?: ''} ～ ${#temporals.format(overtime.report.finishTime, 'MM/dd HH:mm')?: ''}|">
+				</div>
 			</div>
-			
+
 			<div class="field-row">
 				<div class="field-label">休憩時間(分)</div>
-				<div class="field-value text-center" th:text="${overtime.report.breaktime} + '分'"></div>
+				<div class="field-value text-center"
+					th:text="${overtime.report.breaktime != null} ? ${overtime.report.breaktime + '分'} : ''">
+				</div>
+
 			</div>
 			<div class="field-row" style="align-items:flex-start;">
 				<div class="field-label">報告内容</div>
@@ -74,17 +77,17 @@
 			</div>
 			<div class="field-row">
 				<div class="field-label">報告書提出日時</div>
-				<div class="field-value datetime"
-					th:text="${#temporals.format(overtime.report.submitTime, 'yyyy-MM-dd HH:mm')}">2025-01-02 22:00
+				<div class="field-value datetime text-center"
+					th:text="${#temporals.format(overtime.report.submitTime, 'yyyy/MM/dd HH:mm')}">2025-01-02 22:00
 				</div>
 			</div>
 		</section>
-		
+
 		<div class="text-center mt-3">
 			<button class="btn btn-success printButton" onclick="window.print()">印刷する</button>
-			<a th:href="@{/home}" class="btn btn-danger printButton">戻る</a>
+			<a th:href="@{/menu}" class="btn btn-danger printButton">戻る</a>
 		</div>
-		
+
 
 </body>
 

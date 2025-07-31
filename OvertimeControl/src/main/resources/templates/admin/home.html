@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html　xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>管理者ページ</title>
+</head>
+<body>
+
+	<div layout:fragment="content" class="container mt-4">
+		<h2 class="mb-4">管理者メニュー</h2>
+
+		<!-- 概要情報 -->
+		<div class="row mb-4">
+			<div class="col-md-4">
+				<div class="card text-white bg-primary">
+					<div class="card-body">
+						<h5 class="card-title">承認待ち申請</h5>
+						<p class="card-text">
+							<span th:text="${pendingCount}">0</span> 件
+						</p>
+						<a th:href="@{/approval/list}" class="btn btn-light">確認する</a>
+					</div>
+				</div>
+			</div>
+
+			<!--見たまんま今月の申請数-->
+			<div class="col-md-4">
+				<div class="card text-white bg-success">
+					<div class="card-body">
+						<h5 class="card-title">今月の申請</h5>
+						<p class="card-text">
+							<span th:text="${monthlyCount}">0</span> 件
+						</p>
+						<a th:href="@{/overtime/list}" class="btn btn-light">申請一覧</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 管理機能メニュー -->
+		<div class="row">
+
+			<!-- ユーザー管理 -->
+			<div class="col-md-3 mb-4">
+				<a th:href="@{/admin/user}" class="btn btn-outline-secondary btn-block w-100 mb-2">ユーザー管理</a>
+				<div class="bg-light rounded p-2 small">
+					<strong>新規ユーザー：</strong>
+					<ul class="list-unstyled mb-0">
+						<li th:each="user : ${recentUsers}" th:text="${user.name}"></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- 部署管理 -->
+			<div class="col-md-3 mb-4">
+				<a th:href="@{/admin/department}" class="btn btn-outline-secondary btn-block w-100 mb-2">部署管理</a>
+				<canvas id="deptChart" height="100"></canvas>
+			</div>
+
+			<!-- 監査ログ -->
+			<div class="col-md-3 mb-4">
+				<a th:href="@{/admin/audit-log}" class="btn btn-outline-secondary btn-block w-100 mb-2">監査ログ</a>
+				<div class="bg-light rounded p-2 small">
+					<strong>最新ログ：</strong>
+					<ul class="list-unstyled mb-0">
+						<li th:each="log : ${recentLogs}" th:text="${log.summary}"></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- CSVエクスポート -->
+			<div class="col-md-3 mb-4">
+				<a th:href="@{/admin/export}" class="btn btn-outline-secondary btn-block w-100 mb-2">CSVエクスポート</a>
+				<canvas id="exportChart" height="100"></canvas>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+
+</html>

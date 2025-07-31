@@ -16,7 +16,7 @@ import overtime_control.dto.OvertimeRequestDTO;
 
 @Controller
 @Slf4j
-@RequestMapping("/home")
+@RequestMapping("/menu")
 public class OvertimeHomeController {
 
 	@Autowired
@@ -32,6 +32,6 @@ public class OvertimeHomeController {
 		// 承認待ちの申請を取得
 		model.addAttribute("overtimeRequests", overtimeRequests);
 
-		return "overtime/home";
+		return "overtime/menu";
 	}
 }

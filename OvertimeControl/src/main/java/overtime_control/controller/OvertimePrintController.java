@@ -20,17 +20,10 @@ public class OvertimePrintController {
 	OvertimeService overtimeService;
 	
 	
-	@GetMapping
-	public String getPrint(Model model) {
-		OvertimeDTO overtimes = new OvertimeDTO();
-		model.addAttribute("overtime",overtimes);
-		return "overtime/overtime-print";
-	}
-	
 	@GetMapping("/{id}")
 	public String getPrint(@PathVariable Integer id, Model model) {
 		OvertimeDTO overtime = overtimeService.getOvertimeById(id);
 		model.addAttribute("overtime",overtime);
-		return "overtime/overtime-print";
+		return "overtime/print";
 	}
 }

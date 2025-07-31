@@ -13,15 +13,12 @@
 
 			<!-- 左寄せグループ-->
 			<div class="d-flex align-items-center">
-				<a class="navbar-brand me-3" th:href="@{/home}">残業管理アプリ</a>
+				<a class="navbar-brand me-3" th:href="@{/menu}">残業管理アプリ</a>
 
 				<!-- 左側ナビゲーション（横並び） -->
 				<ul class="navbar-nav flex-row">
-					<li class="nav-item me-3">
-						<a class="nav-link text-white" th:href="@{/home}">ホーム</a>
-					</li>
 					<li class="nav-item">
-						<a class="nav-link text-white" th:href="@{/overtime/reported}">報告一覧</a>
+						<a class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" th:href="@{/overtime/list}">報告一覧</a>
 					</li>
 				</ul>
 			</div>
@@ -29,9 +26,8 @@
 			<!-- 右側： -->
 			<div class="d-flex align-items-center">
 				<div class="text-white text-end me-3">
-					<div th:text="${#authentication.principal.departmentName}" style="font-size: 0.85rem;"></div>
-					<div th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}"
-						style="font-weight: bold;"></div>
+					<div th:text="${loginUser.departmentName}" style="font-size: 0.85rem;"></div>
+					<div th:text="${loginUser.familyName + ' ' + loginUser.firstName}" style="font-weight: bold;"></div>
 				</div>
 
 				<!-- トグル -->
@@ -52,13 +48,15 @@
 				</div>
 				<div class="offcanvas-body">
 					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link" th:href="@{/home}">ホーム</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/overtime/reported}">報告一覧</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/menu}">ホーム</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/overtime/list}">報告一覧</a></li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" role="button"
-								data-bs-toggle="dropdown">ユーザー情報</a>
+							<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">設定</a>
 							<ul class="dropdown-menu dropdown-menu-dark">
-								<li><a class="dropdown-item" th:href="@{/setting}">設定</a></li>
+								<li><a class="dropdown-item" th:href="@{/setting}">ユーザー情報</a></li>
+								<li th:if="${loginUser.role.name() == 'ADMIN'}">
+									<a class="dropdown-item" th:href="@{/admin}">管理者メニュー</a>
+								</li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>

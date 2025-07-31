@@ -180,33 +180,6 @@
 		
 	</select>
 	
-	
-	
-	
-	<!-- status 1取得 -->
-	<select id="findAllApproval" resultMap="MOvertime">
-	select
-			mo.id,
-			mo.pattern,
-			mo.request_start_time,
-			mo.request_finish_time,
-			mo.reason,
-			mo.status,
-			d.id AS department_id,
-			d.department_name,
-			u.id AS user_id,
-			u.family_name as user_family_name,
-			u.first_name as user_first_name,
-			u.role AS user_role
-		from
-			m_overtime mo
-		left join department d on mo.department_id = d.id
-		left join m_user u on mo.user_id = u.id
-		where
-			status = 1
-	
-	</select>
-	
 	<!-- 一件取得 -->
 	<select id="selectById" resultMap="MOvertime">
 		select
@@ -345,6 +318,64 @@
 		limit #{limit} offset #{offset}
 	</select>
 	
+	<select id="findByDateBetween" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			row_number() over (
+				partition by u.id 
+				order by mo.request_start_time desc
+			) as display_number
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		where
+			mo.status = 1
+		and
+			mo.request_start_time between #{startDate} and #{finishDate}
+		order by 
+			mo.request_start_time desc
+		limit #{limit} offset #{offset}
+	</select>
+	
+	<select id="findAllByDateBetween" resultMap="MOvertime">
+		select
+			mo.id,
+			mo.pattern,
+			mo.request_start_time,
+			mo.request_finish_time,
+			mo.reason,
+			mo.status,
+			d.id as department_id,
+			d.department_name,
+			u.id as user_id,
+			u.family_name as user_family_name,
+			u.first_name as user_first_name,
+			row_number() over (
+				partition by u.id 
+				order by mo.request_start_time desc
+			) as display_number
+		from
+			m_overtime mo
+		left join department d on mo.department_id = d.id
+		left join m_user u on mo.user_id = u.id
+		where
+			mo.status = 1
+		and
+			mo.request_start_time between #{startDate} and #{finishDate}
+		order by 
+			mo.request_start_time desc
+	</select>
 
 	<!-- 残業申請idからの一件取得 -->
 	<select id="findById" resultMap="MOvertime">
@@ -420,5 +451,15 @@
 		status = #{status}
 	</select>
 	
+	<select id="countApproverOvertimeInPeriodandStatus" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM 
+		m_overtime
+	WHERE 
+		request_start_time BETWEEN #{startDate} AND #{finishDate}
+	AND 
+		status = #{status}
+	</select>
 
 </mapper>

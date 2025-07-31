@@ -12,7 +12,8 @@
 		<div class="container py-4 mt-2">
 			<div class="d-flex justify-content-between align-items-center">
 				<h1 class="text-center flex-grow-1 m-0">残業管理</h1>
-				<a th:href="@{/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
+				<a th:if="${loginUser.role.name() == 'DIRECTOR' or
+							loginUser.role.name() == 'MANAGER'}" th:href="@{/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
 			</div>
 
 			<div class="row mb-4">
@@ -70,7 +71,7 @@
 													<!-- 編集ボタン -->
 													<a th:if="${requests.status.status == '申請中'}"
 														class="btn btn-primary btn-sm mb-1"
-														th:href="@{/overtime/request/update/{id}(id=${requests.id})}">
+														th:href="@{/overtime/edit/{id}(id=${requests.id})}">
 														編集へ
 													</a>
 													<!-- 削除フォーム -->
@@ -83,7 +84,7 @@
 													<!-- 再申請ボタン -->
 													<a th:if="${requests.status.status == '却下'}"
 														class="btn btn-primary btn-sm mb-1"
-														th:href="@{/overtime/request/update/{id}(id=${requests.id})}">
+														th:href="@{/overtime/edit/{id}(id=${requests.id})}">
 														再申請
 													</a>
 

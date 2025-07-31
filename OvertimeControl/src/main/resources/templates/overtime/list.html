@@ -11,12 +11,13 @@
 		<div class="container py-4 mt-2">
 			<div class="d-flex justify-content-between align-items-center mb-4">
 				<h1 class="text-center flex-grow-1 m-0">残業管理</h1>
-				<a th:href="@{/home/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
+				<a th:if="${loginUser.role.name() == 'DIRECTOR' or
+							loginUser.role.name() == 'MANAGER'}" th:href="@{/approval}" class="btn btn-outline-primary">承認者用ページへ</a>
 			</div>
 			<div class="container mt-4">
 				<div class="card shadow-sm">
 					<div class="card-body">
-						<form th:action="@{/overtime/reported}" method="get">
+						<form th:action="@{/overtime/list}" method="get">
 							<div class="row">
 								<!-- 開始日 -->
 								<div class="form-group col-md-3">
@@ -71,7 +72,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- テーブル本体の繰り返し（修正済） -->
 										<tr th:each="overtime : ${overtimes}" th:if="${overtime.status.id >= 4}">
 											<td th:text="${overtime.displayNumber}"></td>
 											<td

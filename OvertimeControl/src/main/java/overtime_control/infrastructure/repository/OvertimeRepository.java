@@ -20,14 +20,24 @@ public interface OvertimeRepository {
     
     //役職あり
     public List<MOvertime> findAllApproval();
-    public List<MOvertime> findByIdAndDateBetween(Integer userId, LocalDateTime startDate,
-    											  LocalDateTime finishDate, int limit, int offset);
+    public List<MOvertime> findByDateBetween(LocalDateTime startDate,
+    										 LocalDateTime finishDate,
+    										 int limit, int offset);
+    public List<MOvertime> findAllByDateBetween(LocalDateTime startDate,
+    											LocalDateTime finishDate);
+    
+    public int countApproverOvertimeInPeriodandStatus(LocalDateTime startDate,
+    												  LocalDateTime finishDate,
+    												  OvertimeStatus status);
     
     //役職なし
     public List<MOvertime> selectRequestByUserId(Integer userId);
     public List<MOvertime> selectReportedByUserId(Integer userId);
-    public List<MOvertime> findByUserIdAndDateBetween(Integer userId, LocalDateTime startDate,
-    												  LocalDateTime finishDate, int limit, int offset);
+    public List<MOvertime> findByUserIdAndDateBetween(Integer userId,
+    												  LocalDateTime startDate,
+    												  LocalDateTime finishDate,
+    												  int limit, int offset);
+    
     public int countByUserIdAndPeriodAndStatus(Integer userId, LocalDateTime startDate,
 			  								   LocalDateTime finishDate, OvertimeStatus status);
     public MOvertime selectById(Integer id);

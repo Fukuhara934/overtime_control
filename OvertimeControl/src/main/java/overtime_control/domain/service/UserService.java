@@ -15,6 +15,10 @@ public interface UserService {
 	public void createUser(MUser user);
 
 	public void updateUser(MUser user);
+	
+	public void updatePassword(MUser user);
+	
+	public void updateEmail(String email, Integer id);
 
 	public void deleteUser(Integer id);
 }

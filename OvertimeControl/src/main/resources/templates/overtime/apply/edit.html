@@ -4,30 +4,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>残業申請書 入力画面</title>
+<title>残業申請 修正画面</title>
 </head>
 <body>
 	<div layout:fragment="content" class="container my-4">
-		<h2 class="text-center mb-4 mt-3">残業申請</h2>
-		
-		<table class="table">
-			<tr>
-				<th>部署名</th>
-				<td th:text="${#authentication.principal.departmentName}"></td>
-			</tr>
-			<tr>
-				<th>申請者名</th>
-				<td th:text="${#authentication.principal.familyName + ' ' + #authentication.principal.firstName}"></td>
-			</tr>
-			<tr>
-				<th>申請日</th>
-				<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></td>
-			</tr>
-		</table>
 
+		<h2 class="text-center mt-3 mb-4">残業申請 修正</h2>
 
-		<form method="post" th:action="@{/overtime/request}" th:object="${overtimeRequestForm}">
+		<!-- 却下理由の表示 -->
+		<div class="form-group" th:if="${rejectReason != null}">
+			<label>却下理由</label>
+			<textarea class="form-control" th:text="${rejectReason}" readonly rows="3"></textarea>
+		</div>
+
+		<form method="post" th:action="@{/overtime/edit/{id}(id=${overtimeId})}"
+			th:object="${overtimeRequestForm}">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+	
+			<table class="table">
+				<tr>
+					<th>申請日</th>
+					<td th:text="${#temporals.format(today, 'yyyy/MM/dd')}"></td>
+				</tr>
+			</table>
+
 			<div class="form-group">
 				<label for="workPattern">勤務パターン</label>
 				<select class="form-control" th:field="*{workPattern}" th:errorclass="is-invalid">
@@ -35,11 +35,8 @@
 						th:text="${pattern.displayName}">
 					</option>
 				</select>
-
 				<div class="invalid-feedback" th:errors="*{workPattern}"></div>
 			</div>
-
-
 
 			<div class="form-group">
 				<label for="requestStartTime">残業予定開始時間</label>
@@ -47,24 +44,26 @@
 					th:errorclass="is-invalid" />
 				<div class="invalid-feedback" th:errors="*{requestStartTime}"></div>
 			</div>
+
 			<div class="form-group">
 				<label for="requestFinishTime">残業予定終了時間</label>
 				<input type="datetime-local" class="form-control" th:field="*{requestFinishTime}"
 					th:errorclass="is-invalid" />
 				<div class="invalid-feedback" th:errors="*{requestFinishTime}"></div>
 			</div>
+
 			<div class="form-group">
 				<label for="reason">残業理由</label>
 				<textarea class="form-control" th:field="*{reason}" rows="3" th:errorclass="is-invalid"></textarea>
 				<div class="invalid-feedback" th:errors="*{reason}"></div>
 			</div>
+
 			<div class="text-center mt-4">
-				<input type="submit" class="btn btn-primary mt-3" th:value="#{request}">
-				<a class="btn btn-primary mt-3" th:href="@{/home}">キャンセル</a>
+				<input type="submit" class="btn btn-primary"　th:value="#{re.request}">
+				<a class="btn btn-secondary" th:href="@{/menu}">キャンセル</a>
 			</div>
-
 		</form>
-
+	</div>
 </body>
 
 </html>
